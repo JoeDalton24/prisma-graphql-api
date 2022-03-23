@@ -1,0 +1,23 @@
+{
+  "name": "graphql-basic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/index.js --ext js,graphql",
+    "get-schema": "graphql get-schema -p prisma"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "graphql-cli": "^2.16.4",
+    "graphql-yoga": "^1.18.3",
+    "prisma-binding": "^2.3.16"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.0",
+    "nodemon": "^2.0.15"
+  }
+}
