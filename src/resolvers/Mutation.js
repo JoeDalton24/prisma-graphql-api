@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-const ACCES_TOKEN = process.env.ACCES_TOKEN;
+import { getUserId } from "../utils/util.js";
+const ACCES_TOKEN = "276486c9aee6135040d20a9461daab70";
 
 const Mutation = {
   async createUser(parent, args, { prisma }, info) {
@@ -24,7 +25,7 @@ const Mutation = {
 
     return {
       user,
-      token: jwt.sign({ userId: user.id }, "276486c9aee6135040d20a9461daab70"),
+      token: jwt.sign({ userId: user.id }, ACCES_TOKEN),
     };
   },
   async deleteUser(parent, args, { prisma }, info) {
@@ -65,15 +66,13 @@ const Mutation = {
   },
 
   // pour la creation de poste soit on peut fournir un user oubien en creer une
-  async createPost(parent, args, { prisma, pubsub }, info) {
-    const isUserExist = await prisma.exists.User({ id: args.data.author });
-    if (!isUserExist) throw new Error("User not Exist");
-
+  async createPost(parent, args, { prisma, request }, info) {
+    const userId = getUserId(request, ACCES_TOKEN);
     const data = {
       ...args.data,
       author: {
         connect: {
-          id: args.data.author,
+          id: userId,
         },
       },
     };
@@ -145,17 +144,17 @@ const Mutation = {
   },
 
   async login(parent, args, { prisma }, info) {
-    const user = await prisma.query.User({
+    const user = await prisma.query.user({
       where: {
-        email: args.email,
+        email: args.data.email,
       },
     });
 
     if (!user) {
-      throw new Error("user not exist");
+      throw new Error("Invalid Credential");
     }
-
-    if (!bcrypt.compare(args.data.password, user.password)) {
+    const isMatch = await bcrypt.compare(args.data.password, user.password);
+    if (!isMatch) {
       throw new Error("Invalid Credential");
     }
 
