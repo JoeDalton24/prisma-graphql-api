@@ -5,7 +5,8 @@ This is an **GraphQl API** that allow me to test my knowledge about
 I also implement all the authentication process and plan to implement caching process.
 
 ![Made By JoeDaltonGeekVersion](/assets/graphql.jpg)
-[!docker](/assets/docker.png) [!nodejs](/assets/nodejs.png) [!prisma](/assets/Prisma.png) [!postgre](/assets//postgre.png)s
+![docker](/assets/docker.png) ![nodejs](/assets/nodejs.png) ![prisma](/assets/Prisma.png)
+![postgre](/assets//postgre.png)
 
 # Run the project ✅
 
