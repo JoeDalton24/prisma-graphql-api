@@ -6,11 +6,11 @@ I also implement all the authentication process and plan to implement caching pr
 
 ![Made By JoeDaltonGeekVersion](/assets/graphql.jpg)
 
-<p align="center">
-  <img width="460" height="300" src="./assets/nodejs.png">
-  <img width="460" height="300" src="./assets/prisma.png">
-  <img width="460" height="300" src="./assets/docker.png">
-  <img width="460" height="300" src="./assets/postgre.png">
+<p align="left">
+  <img align="center" width="80" height="80" src="./assets/nodejs.png">
+  <img  align="center" width="80" height="80" src="./assets/Prisma.png">
+  <img align="center" width="80" height="80" src="./assets/docker.png">
+  <img align="center" width="80" height="80" src="./assets/postgre.png">
 </p>
 
 # Run the project ✅
