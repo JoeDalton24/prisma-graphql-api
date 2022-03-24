@@ -1,4 +1,4 @@
-![Made By JoeDaltonGeekVersion]('./assets/graphql.jpg')
+![Made By JoeDaltonGeekVersion](/assets/graphql.jpg)
 
 ### Description
 
