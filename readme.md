@@ -1,7 +1,10 @@
+![Made By JoeDaltonGeekVersion]('./assets/graphql.jpg')
+
 ### Description
 
-this is a blog graphql api that allow me to test my knowledge about
+This is a blog graphql api that allow me to test my knowledge about
 graphql and prisma.
+I also implement all the authentication process and plan to implement caching process.
 
 # Run the project
 
