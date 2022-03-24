@@ -1,3 +1,7 @@
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+const ACCES_TOKEN = process.env.ACCES_TOKEN;
+
 const Mutation = {
   async createUser(parent, args, { prisma }, info) {
     const emailTaken = await prisma.exists.User({ email: args.data.email });
@@ -6,9 +10,22 @@ const Mutation = {
       throw new Error("email exist");
     }
 
-    const user = await prisma.mutation.createUser({ data: args.data }, info);
+    if (args.data.password.length < 8) {
+      throw new Error("Password must contain at least 8 character");
+    }
+    const password = await bcrypt.hash(args.data.password, 10);
 
-    return user;
+    const user = await prisma.mutation.createUser({
+      data: {
+        ...args.data,
+        password,
+      },
+    });
+
+    return {
+      user,
+      token: jwt.sign({ userId: user.id }, "276486c9aee6135040d20a9461daab70"),
+    };
   },
   async deleteUser(parent, args, { prisma }, info) {
     // const { userId } = args;
@@ -125,6 +142,27 @@ const Mutation = {
         id: args.commentId,
       },
     });
+  },
+
+  async login(parent, args, { prisma }, info) {
+    const user = await prisma.query.User({
+      where: {
+        email: args.email,
+      },
+    });
+
+    if (!user) {
+      throw new Error("user not exist");
+    }
+
+    if (!bcrypt.compare(args.data.password, user.password)) {
+      throw new Error("Invalid Credential");
+    }
+
+    return {
+      user,
+      token: jwt.sign({ userId: user.id }, ACCES_TOKEN),
+    };
   },
 };
 

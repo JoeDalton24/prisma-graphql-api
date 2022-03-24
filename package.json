@@ -12,12 +12,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.0",
     "graphql-cli": "^2.16.4",
     "graphql-yoga": "^1.18.3",
+    "jsonwebtoken": "^8.5.1",
     "prisma-binding": "^2.3.16"
   },
   "devDependencies": {
-    "dotenv": "^16.0.0",
     "nodemon": "^2.0.15"
   }
 }

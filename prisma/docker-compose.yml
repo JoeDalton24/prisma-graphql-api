@@ -20,3 +20,4 @@ services:
             user: ${db_user}
             password: ${db_password}
             migrations: true
+
