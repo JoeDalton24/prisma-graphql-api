@@ -28,41 +28,28 @@ const Mutation = {
       token: jwt.sign({ userId: user.id }, ACCES_TOKEN),
     };
   },
-  async deleteUser(parent, args, { prisma }, info) {
-    // const { userId } = args;
-    const isUserExist = await prisma.exists.User({ id: args.userId });
+  deleteUser(parent, args, { prisma, request }, info) {
+    const userId = getUserId(request, ACCES_TOKEN);
 
-    if (!isUserExist) {
-      throw new Error("User not exist");
-    }
-
-    const user = await prisma.mutation.deleteUser(
+    return prisma.mutation.deleteUser(
       {
-        where: { id: args.userId },
+        where: { id: userId },
       },
       info
     );
-
-    return user;
   },
-  async updateUser(parent, args, { prisma }, info) {
-    const isUserExist = await prisma.exists.User({ id: args.userId });
+  async updateUser(parent, args, { prisma, request }, info) {
+    const userId = getUserId(request, ACCES_TOKEN);
 
-    if (!isUserExist) {
-      throw new Error("user not found");
-    }
-
-    const user = await prisma.mutation.updateUser(
+    return prisma.mutation.updateUser(
       {
         data: args.data,
         where: {
-          id: args.userId,
+          id: userId,
         },
       },
       info
     );
-
-    return user;
   },
 
   // pour la creation de poste soit on peut fournir un user oubien en creer une
