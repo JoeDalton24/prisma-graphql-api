@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
+const ACCES_TOKEN = "276486c9aee6135040d20a9461daab70";
 
-export function getUserId(request, ACCES_TOKEN) {
+export function getUserId(request) {
   const header = request.request.headers.authorization;
 
   if (!header) {
