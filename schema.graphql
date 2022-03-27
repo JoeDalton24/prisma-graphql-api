@@ -2,6 +2,8 @@ type Query {
   users(id: ID): [User!]!
   posts(query: String): [Post!]!
   comments: [Comment!]!
+  post(postId: ID!): Post!
+  me: User!
 }
 
 type Mutation {
