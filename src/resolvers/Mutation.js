@@ -1,7 +1,9 @@
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { getUserId } from "../utils/util.js";
-const ACCES_TOKEN = "276486c9aee6135040d20a9461daab70";
+import {
+  getUserId,
+  generateToken,
+  hashPassword,
+  comparePassword,
+} from "../utils/util.js";
 
 const Mutation = {
   async createUser(parent, args, { prisma }, info) {
@@ -14,7 +16,7 @@ const Mutation = {
     if (args.data.password.length < 8) {
       throw new Error("Password must contain at least 8 character");
     }
-    const password = await bcrypt.hash(args.data.password, 10);
+    const password = await hashPassword(args.data.password);
 
     const user = await prisma.mutation.createUser({
       data: {
@@ -25,7 +27,7 @@ const Mutation = {
 
     return {
       user,
-      token: jwt.sign({ userId: user.id }, ACCES_TOKEN),
+      token: generateToken(user.id),
     };
   },
   deleteUser(parent, args, { prisma, request }, info) {
@@ -38,8 +40,12 @@ const Mutation = {
       info
     );
   },
-  updateUser(parent, args, { prisma, request }, info) {
+  async updateUser(parent, args, { prisma, request }, info) {
     const userId = getUserId(request);
+
+    if (args.data.password) {
+      args.data.password = await hashPassword(args.data.password);
+    }
 
     return prisma.mutation.updateUser(
       {
@@ -94,6 +100,17 @@ const Mutation = {
 
     if (!post) {
       throw new Error("can't update this post");
+    }
+
+    const isPublished = await prisma.exists.Post({
+      id: args.postId,
+      published: true,
+    });
+
+    if (isPublished && !args.data.published) {
+      await prisma.mutation.deleteManyComments({
+        where: { post: { id: args.postId } },
+      });
     }
 
     return prisma.mutation.updatePost(
@@ -189,14 +206,14 @@ const Mutation = {
     if (!user) {
       throw new Error("Invalid Credential");
     }
-    const isMatch = await bcrypt.compare(args.data.password, user.password);
+    const isMatch = await comparePassword(args.data.password, user.password);
     if (!isMatch) {
       throw new Error("Invalid Credential");
     }
 
     return {
       user,
-      token: jwt.sign({ userId: user.id }, ACCES_TOKEN),
+      token: generateToken(user.id),
     };
   },
 };

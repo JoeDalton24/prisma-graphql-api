@@ -1,5 +1,10 @@
 import jwt from "jsonwebtoken";
-const ACCES_TOKEN = "276486c9aee6135040d20a9461daab70";
+import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const ACCES_TOKEN = process.env.ACCES_TOKEN;
 
 export function getUserId(request, requireAuth = true) {
   const header = request.request.headers.authorization;
@@ -16,4 +21,20 @@ export function getUserId(request, requireAuth = true) {
   }
 
   return null;
+}
+export function generateToken(userId) {
+  const expiresIn = "7 days";
+  if (!userId) {
+    throw new Error();
+  }
+  return jwt.sign({ userId }, ACCES_TOKEN, { expiresIn });
+}
+
+export async function hashPassword(password) {
+  const SALT = 10;
+  return bcrypt.hash(password, SALT);
+}
+
+export async function comparePassword(providedPassword, storedPassword) {
+  return bcrypt.compare(providedPassword, storedPassword);
 }

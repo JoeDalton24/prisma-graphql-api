@@ -2,7 +2,10 @@ import { getUserId } from "../utils/util.js";
 
 const Query = {
   users(parent, args, { prisma }, info) {
-    const optionArg = {};
+    const optionArg = {
+      first: args.first,
+      skip: args.skip,
+    };
     if (args.query) {
       optionArg.where = {
         OR: [
@@ -21,7 +24,10 @@ const Query = {
   posts(parent, args, { prisma, request }, info) {
     const userId = getUserId(request, false);
 
-    const optionArg = {};
+    const optionArg = {
+      first: args.first,
+      skip: args.skip,
+    };
 
     if (userId === null) {
       optionArg.where = {
@@ -65,7 +71,11 @@ const Query = {
   },
 
   comments(parent, args, { prisma }, info) {
-    return prisma.query.comments(null, info);
+    const optionArg = {
+      first: args.first,
+      skip: args.skip,
+    };
+    return prisma.query.comments(optionArg, info);
   },
 
   async post(parent, args, { prisma, request }, info) {
