@@ -5,6 +5,7 @@ const Query = {
     const optionArg = {
       first: args.first,
       skip: args.skip,
+      orderBy: args.orderBy,
     };
     if (args.query) {
       optionArg.where = {
@@ -27,6 +28,7 @@ const Query = {
     const optionArg = {
       first: args.first,
       skip: args.skip,
+      orderBy: args.orderBy,
     };
 
     if (userId === null) {
@@ -74,6 +76,7 @@ const Query = {
     const optionArg = {
       first: args.first,
       skip: args.skip,
+      orderBy: args.orderBy,
     };
     return prisma.query.comments(optionArg, info);
   },

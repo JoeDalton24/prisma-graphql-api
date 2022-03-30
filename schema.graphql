@@ -1,7 +1,14 @@
+# import PostOrderByInput,UserOrderByInput,CommentOrderByInput from "./src/generated/prisma.graphql"
+
 type Query {
-  users(query: ID, first: Int, skip: Int): [User!]!
-  posts(query: String, first: Int, skip: Int): [Post!]!
-  comments(first: Int, skip: Int): [Comment!]!
+  users(query: ID, first: Int, skip: Int, orderBy: UserOrderByInput): [User!]!
+  posts(
+    query: String
+    first: Int
+    skip: Int
+    orderBy: PostOrderByInput
+  ): [Post!]!
+  comments(first: Int, skip: Int, orderBy: CommentOrderByInput): [Comment!]!
   post(postId: ID!): Post!
   me: User!
 }
@@ -66,6 +73,8 @@ type User {
   password: String!
   posts: [Post!]!
   comments: [Comment!]!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Post {
@@ -75,6 +84,8 @@ type Post {
   published: Boolean!
   author: User!
   comments: [Comment!]!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Comment {
@@ -82,6 +93,8 @@ type Comment {
   text: String!
   author: User!
   post: Post!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type PostSubscriptionPayload {
